@@ -1,0 +1,88 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>@ViewData["Title"]</title>
+    <link href="~/site.min.css" rel="stylesheet" asp-append-version="true" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/4.0.2/marked.min.js" referrerpolicy="no-referrer" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/js/all.min.js" integrity="sha512-naukR7I+Nk6gp7p5TMA4ycgfxaZBJ7MO5iC3Fp6ySQyKFHOGfpkSZkYVWV5R7u7cfAicxanwYQ5D1e17EfJcMA==" crossorigin="anonymous" referrerpolicy="no-referrer" async defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/3.10.4/cdn.min.js" integrity="sha512-Zq7JviKo/hIy704ZFZo18ULX3LjAcbM2Qft92HrEyNCXcEtt2+0On8DaEb7Dce+AbdS+jBpBgKSD2P/0WfKhIQ==" crossorigin="anonymous" referrerpolicy="no-referrer" async defer></script>
+</head>
+<body>
+    <nav class="navbar is-dark" role="navigation" aria-label="main navigation" x-data="{ open: false}">
+        <div class="navbar-brand">
+            <a class="navbar-item" href="/">AspNetCoreEfCoreTemplate</a>
+            <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" x-on:click="open = !open" x-bind:class="{ 'is-active': open}">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+            </a>
+        </div>
+        <div class="navbar-menu" x-bind:class="{ 'is-active': open }">
+            <div class="navbar-start">
+                @*<a class="navbar-item" asp-action="BatchIndex" asp-controller="Batch">Batches</a>*@
+                @*                <div class="navbar-item has-dropdown is-hoverable">
+                <a class="navbar-link">Listings</a>
+                <div class="navbar-dropdown">
+                <a class="navbar-item" asp-action="ListingIndex" asp-controller="Listing">Listings</a>
+                <a class="navbar-item" asp-action="CreateListing" asp-controller="Listing">New Listing</a>
+                </div>
+                </div>*@
+            </div>
+        </div>
+    </nav>
+    <main>
+        <section class="section">
+            <div class="container">
+                @if (TempData.ContainsKey(Constants.MessageSuccess))
+                {
+                    <div class="notification js-notification is-small has-text-centered is-light is-success mt-3">
+                        @TempData[Constants.MessageSuccess]
+                        <button class="delete" onclick="this.parentNode.remove()"></button>
+                    </div>
+                }
+                @if (TempData.ContainsKey(Constants.MessageError))
+                {
+                    <div class="notification js-notification is-small has-text-centered is-danger is-light mt-3">
+                        @TempData[Constants.MessageError]
+                        <button class="delete" onclick="this.parentNode.remove()"></button>
+                    </div>
+                }
+                @if (TempData.ContainsKey(Constants.MessageWarning))
+                {
+                    <div class="notification js-notification is-small has-text-centered is-warning is-light mt-3">
+                        @TempData[Constants.MessageWarning]
+                        <button class="delete" onclick="this.parentNode.remove()"></button>
+                    </div>
+                }
+                @RenderBody()
+            </div>
+        </section>
+    </main>
+    <footer class="footer my-5 py-5"></footer>
+    <environment names="Development">
+        <div class="notification is-info has-text-centered mb-0" style="position:fixed;bottom:0;left:0;right:0">Development mode</div>
+    </environment>
+    <script>
+        document.addEventListener('DOMContentLoaded', e => {
+            document.querySelectorAll('[data-markdown]').forEach(a => {
+                const data = a.dataset.markdown;
+                a.innerHTML = marked.parse(data);
+            });
+        })
+    </script>
+    <script>
+        document.querySelectorAll('li.is-active').forEach(el => {
+            el.querySelector('.pagination-link').classList.add('is-current');
+        });
+    </script>
+    <script>
+        const n = document.querySelector(".js-notification")
+        if (n) {
+            setTimeout(() => n.remove(), 3000)
+        }
+    </script>
+    <script>document.getElementsByName('returnUrl').forEach(el => el.value = location.href)</script>
+</body>
+</html>
